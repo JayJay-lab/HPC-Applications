@@ -935,6 +935,11 @@ Together, these technologies allow the project to investigate how modern HPC sys
 
 ---
 
+# Bottlenecks for Ascot
+
+CPU computation
+
+
 ## References
 
 - ASCOT5 — Aalto University / VTT  
@@ -951,6 +956,9 @@ Together, these technologies allow the project to investigate how modern HPC sys
 ## Project Status
 
 **Status:** In Progress
+
+
+
 
 ### Current focus
 
