@@ -159,4 +159,11 @@ sudo apt update && sudo apt install -y libhdf5-openmpi-dev
 
 # Python 3.10
 ```bash
+
+sudo apt update
+sudo apt install -y python3.10 python3.10-venv python3.10-dev
 ```
+```bash
+python3.10 --version
+```
+
