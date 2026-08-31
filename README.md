@@ -11,6 +11,33 @@ The code is implemented in C and consists of a main program and a library. Simul
 
 The repository is maintained by Aalto University and VTT Technical Research Centre of Finland.
 
+
+### BBNBI
+
+Calculates beam birth profile and shinethrough from NBI geometry.
+
+Can provide a NBI source for ASCOT5 slowing-down simulations.
+
+### AFSI
+
+Calculates fusion product source from thermal plasma and fast ion slowing-down distributions (as computed by ASCOT5).
+
+For fusion neutronics, AFSI can be combined with Serpent.
+
+### BioSaw
+
+Calculates magnetic field based on a coil geometry.
+
+Can provide a 3D field for ASCOT5 simulations.
+
+### BMC
+
+Backward Monte-Carlo simulation tool that can be thought as a time-reversed ASCOT5.
+
+Effective tool for estimating FILD signals and wall loads on small but critical components.
+
+Not yet fully complete.
+
 # 1. Requirements
 
 Install the requirements or use the module system:
