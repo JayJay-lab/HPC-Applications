@@ -138,6 +138,39 @@ Effective tool for estimating FILD signals and wall loads on small but critical 
 
 Not yet fully complete.
 
+
+
+## Processing data
+
+The ASCOT5 HDF5 file, named ascot.h5 from here on out, contains all data required to run a simulation. All data is contained in a single file so that the results, and the inputs that produced them, are always kept together. The file is designed to hold multiple inputs (even of same type) and results of multiple simulations. One is encouraged to use a single file for the whole project or study.
+
+The exact structure of the contents of the HDF5 file is not that relevent since it should always be accessed via the Python interface provided by a5py. When accessed via Python, the contents of the file as they appear are illustrated below:
+
+```bash
+data
+├── bfield               # Magnetic field inputs
+│   ├── B_2DS_7027705680 # Some 2D magnetic field data
+│   ├── B_3DS_0890178582 # Some other 2D magnetic field data
+│   └── ...              # Some other possible magnetic field data
+│
+├── efield               # Electric field inputs
+│   └── ...
+│
+├── ...                  # Other inputs (wall, plasma, etc.)
+│
+├── run_892758002        # Results of a single simulation
+├── run_992765110        # Results of another simulation
+└── ...                  # Other possible results
+
+```
+
+The input data is divided into separate parent groups: one for the magnetic field inputs, one for the electric field inputs and so on. Each parent group can have multiple children which contain the actual input data. For example, one may have several plasma inputs that vary in density for a parameter scan or one can have a separate 2D and 3D magnetic fields for comparison. One of the children is always marked as active meaning that input will be used in the next simulation. The active input is used by default when interpolating the input data via the Python interface in pre- and postprocessing.
+
+As for the results, one group is always marked as active (if any results exist) which by default is the result of the most recent simulation. Each input and result has a ten number string that is randomly generated when that data is written to the file. This QID (quasi unique identifier) is used to separate different inputs and results from one another. Each input and result also contains the date at which they were created, what type they are (e.g. 2D vs 3D tokamak magnetic field), and an optional description given by the user. It is strongly recommended to document your work using the description field which can also be used to conveniently access the data in postprocessing.
+
+
+
+
 # 1. Requirements
 
 Install the requirements or use the module system:
