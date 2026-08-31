@@ -150,4 +150,9 @@ ml mkl/2024.2
 ---
 
 
-#HDF5
+# HDF5
+
+```bash
+
+sudo apt update && sudo apt install -y libhdf5-openmpi-dev
+```
