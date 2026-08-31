@@ -150,14 +150,20 @@ ml mkl/2024.2
 ---
 
 
-# HDF5
+## HDF5
 
 ```bash
 
 sudo apt update && sudo apt install -y libhdf5-openmpi-dev
 ```
+verify 
+```bash
 
-# Python 3.10
+which h5pcc || which h5pcc.openmpi
+```
+output /usr/bin/h5pcc
+
+## Python 3.10
 ```bash
 
 sudo apt update
@@ -166,4 +172,33 @@ sudo apt install -y python3.10 python3.10-venv python3.10-dev
 ```bash
 python3.10 --version
 ```
+
+# 2. Installing ASCOT5
+
+## Download the source and set up the virtual environment:
+```bash
+git clone https://github.com/ascot4fusion/ascot5.git
+python -m venv ascot-env
+source activate ascot-env/bin/activate
+```
+
+## Install a5py and compile the executables which will be located at build/:
+
+```bash
+cd ascot5
+pip install -e .
+make ascot5_main -j MPI=1
+make libascot -j MPI=1
+```
+
+##The simulation options are edited with the local text editor, which usually happens to be vim. Consider adding the following line to your .bashrc (or .bash_profile if working locally):
+
+```bash
+echo 'export EDITOR=/usr/bin/nano' >> ~/.bashrc
+```
+
+
+
+
+
 
