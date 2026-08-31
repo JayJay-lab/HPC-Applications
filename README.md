@@ -101,8 +101,17 @@ large numbers of simulation markers
 
 The ASCOT documentation specifically notes that these can be memory-intensive inputs, and that MPI processes do not share memory.
 
+```bash
+Node
+├── CPU cores
+├── RAM
+│   ├── magnetic field data
+│   ├── wall data
+│   ├── particle/marker data
+│   └── diagnostics
+└── ASCOT computation
 
-
+```
 
 
 
