@@ -96,7 +96,7 @@ The ASCOT documentation specifically notes that these can be memory-intensive in
 
 
 
-# 2. But memory can become important
+
 
 
 
@@ -142,6 +142,8 @@ Not yet fully complete.
 
 ## Processing data
 
+#Data
+
 The ASCOT5 HDF5 file, named ascot.h5 from here on out, contains all data required to run a simulation. All data is contained in a single file so that the results, and the inputs that produced them, are always kept together. The file is designed to hold multiple inputs (even of same type) and results of multiple simulations. One is encouraged to use a single file for the whole project or study.
 
 The exact structure of the contents of the HDF5 file is not that relevent since it should always be accessed via the Python interface provided by a5py. When accessed via Python, the contents of the file as they appear are illustrated below:
@@ -168,6 +170,11 @@ The input data is divided into separate parent groups: one for the magnetic fiel
 
 As for the results, one group is always marked as active (if any results exist) which by default is the result of the most recent simulation. Each input and result has a ten number string that is randomly generated when that data is written to the file. This QID (quasi unique identifier) is used to separate different inputs and results from one another. Each input and result also contains the date at which they were created, what type they are (e.g. 2D vs 3D tokamak magnetic field), and an optional description given by the user. It is strongly recommended to document your work using the description field which can also be used to conveniently access the data in postprocessing.
 
+# Data access
+
+No actual data is read during the initialization, so these objects are very light-weight and new instances can be created at will The contents of the file are accessed via Ascot.data, which is an instance of Ascot5IO, and it provides a “treeview” of the file which was illustrated in the previous section.
+
+Inputs are divided to groups depending on what type of input data they provide. All magnetic field inputs are located in the bfield group, all electric field inputs in the efield group, and so on. All different input parent groups are instances of InputNode class
 
 
 
