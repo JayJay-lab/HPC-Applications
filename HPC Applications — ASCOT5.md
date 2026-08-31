@@ -935,10 +935,43 @@ Together, these technologies allow the project to investigate how modern HPC sys
 
 ---
 
-# Bottlenecks for Ascot
+# ASCOT5 Performance Bottlenecks
 
-CPU computation
+## Overview
 
+ASCOT5 is a high-performance particle orbit-following application used in fusion plasma physics and engineering.
+
+Because ASCOT5 can simulate large numbers of computational particles, it can place significant demands on CPU resources, memory, communication and storage.
+
+The purpose of this investigation is to identify the potential performance bottlenecks when running ASCOT5 on an HPC cluster.
+
+> **The bottleneck should not be assumed beforehand. It must be identified through performance measurements and benchmarking.**
+
+---
+
+## 1. CPU Computation
+
+CPU computation is one of the main potential bottlenecks in ASCOT5.
+
+The application repeatedly performs numerical calculations for simulated particles, including particle motion, field calculations, transport and interactions.
+
+```text
+Millions of Markers
+        |
+        v
+Particle Calculations
+        |
+        v
+Field Calculations
+        |
+        v
+Transport / Interaction Calculations
+        |
+        v
+Update Particle State
+        |
+        v
+Repeat
 
 ## References
 
