@@ -1,9 +1,9 @@
 # HPC-Applications
-##Ascot5
+## ASCOT5
 
 ASCOT5 is a test-particle orbit-following code for solving minority species’ distribution functions, transport, and losses in tokamaks and stellarators. For questions related to the code or physics, please join our Slack channel.
 
-##Features
+## Features
 
 ASCOT5 is a test-particle orbit-following code for computing particle orbits in 3D geometry. The output includes particle orbits, phase-space distributions, transport coefficients, and wall loads. ASCOT5 is frequently applied to study fast ions, impurities, neutrals, and runaway electrons in tokamaks and stellarators. Particle orbits are either solved fully, i.e. including the gyro-motion, or in a reduced picture where only the guiding-center trajectory is traced. The code is extensively parallelized and optimized to support simulations with more than ten million markers.
 
@@ -11,7 +11,7 @@ The code is implemented in C and consists of a main program and a library. Simul
 
 The repository is maintained by Aalto University and VTT Technical Research Centre of Finland.
 
-##Requirements
+## Requirements
 
 Install the requirements or use the module system:
 
@@ -21,9 +21,9 @@ OpenMP
 MPI
 Python3.10
 
-For C compiler(Intel)  and MPI
 
-## 3.6. Intel oneAPI Toolkits — Maximum Performance
+
+##  Intel oneAPI Toolkits — Maximum Performance ( C compiler and MPI)
 
 Intel's oneAPI Toolkit is a comprehensive collection of compilers, math libraries, and profiling tools developed and maintained by Intel. The key components for HPL benchmarking are:
 
