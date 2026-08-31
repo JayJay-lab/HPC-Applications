@@ -1,4 +1,4 @@
-<img width="1569" height="930" alt="image" src="https://github.com/user-attachments/assets/33085a9b-862b-4910-a7f4-27c54abd4d7a" /># HPC Applications — ASCOT5
+# HPC Applications — ASCOT5
 
 ## Overview
 
