@@ -19,7 +19,6 @@ In simple terms:
 
 > **ASCOT5 is a virtual laboratory for studying particle behaviour inside a fusion reactor.**
 
-The purpose of this project is not only to run ASCOT5, but to investigate how effectively an HPC system can execute this type of real-world scientific workload.
 
 ---
 
