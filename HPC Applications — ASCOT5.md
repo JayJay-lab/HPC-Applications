@@ -1,4 +1,4 @@
-# HPC Applications — ASCOT5
+<img width="1569" height="930" alt="image" src="https://github.com/user-attachments/assets/33085a9b-862b-4910-a7f4-27c54abd4d7a" /># HPC Applications — ASCOT5
 
 ## Overview
 
@@ -83,6 +83,10 @@ ASCOT5 is therefore a **scientific simulation tool**, not a fusion reactor itsel
 
 # 2. Tokamaks and Stellarators
 
+
+<img width="1569" height="930" alt="image" src="https://github.com/user-attachments/assets/d9e227fd-d640-4014-8b99-045c7d4fd6b6" />
+
+
 ## Tokamak
 
 A tokamak is a magnetic-confinement fusion device with a toroidal, approximately doughnut-shaped geometry.
@@ -90,6 +94,10 @@ A tokamak is a magnetic-confinement fusion device with a toroidal, approximately
 Magnetic fields are used to keep the extremely hot plasma away from material surfaces while fusion reactions occur.
 
 ASCOT5 can simulate particle behaviour inside tokamak configurations.
+
+<img width="730" height="447" alt="image" src="https://github.com/user-attachments/assets/8c419bcf-aecd-4349-b951-3b3c8b06c9ad" />
+
+
 
 ## Stellarator
 
