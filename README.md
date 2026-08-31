@@ -11,7 +11,7 @@ The code is implemented in C and consists of a main program and a library. Simul
 
 The repository is maintained by Aalto University and VTT Technical Research Centre of Finland.
 
-## Requirements
+# 1. Requirements
 
 Install the requirements or use the module system:
 
