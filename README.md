@@ -156,3 +156,7 @@ ml mkl/2024.2
 
 sudo apt update && sudo apt install -y libhdf5-openmpi-dev
 ```
+
+# Python 3.10
+```bash
+```
