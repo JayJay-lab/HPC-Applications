@@ -3,6 +3,106 @@
 
 ASCOT5 is a test-particle orbit-following code for solving minority species’ distribution functions, transport, and losses in tokamaks and stellarators. For questions related to the code or physics, please join our Slack channel.
 
+
+#ASCOT in the real world 
+
+The real-life purpose of ASCOT5 is to help scientists and engineers design, understand, and improve nuclear fusion reactors.
+
+It does this by simulating what happens to charged particles inside a fusion device such as a tokamak or stellarator.
+
+For example, researchers can use ASCOT to study:
+
+How well particles are confined by the reactor's magnetic fields
+Where energetic particles travel
+How much energy particles lose
+What happens when particles hit the reactor walls
+How much heat and particle load reaches reactor components
+How plasma impurities move through the reactor
+
+This matters because a fusion reactor needs to keep the extremely hot plasma confined while protecting the reactor's physical components.
+
+
+```bash
+Engineer designs magnetic field
+            ↓
+       ASCOT simulation
+            ↓
+Tracks millions of particles
+            ↓
+Predicts their trajectories
+            ↓
+Finds where particles escape
+            ↓
+Predicts heat/load on reactor walls
+            ↓
+Engineer modifies reactor design
+```
+Note well!!!
+So ASCOT is not itself a fusion reactor. It is a scientific simulation tool used to predict what will happen inside fusion machines before engineers build, modify, or operate them.
+
+
+
+# What does this application calculates
+
+ASCOT5 is a particle-following fusion simulation code. You give it information such as:
+```bash
+Magnetic field
+Plasma parameters
+Reactor geometry / wall
+Particle properties
+       ↓
+      ASCOT5
+       ↓
+Numerically calculate particle motion
+       ↓
+Particle trajectories + energy + collisions + wall interactions
+       ↓
+Statistics / diagnostics / physics results
+```
+
+A "marker" in ASCOT is essentially a simulated particle. ASCOT numerically advances these markers through the magnetic field and calculates what happens to them. The important point for HPC is that different markers can largely be simulated independently, which makes the problem highly parallelizable.
+
+Note!!! 
+it is running mathematical and numerical calculations continuously during the simulation.
+
+#Is it CPU or memory intensive
+
+ASCOT5 uses several levels of parallelism:
+```bash
+MPI processes
+      ↓
+OpenMP threads
+      ↓
+SIMD/vector operations
+      ↓
+Particle calculations
+```
+
+#  But memory can become important
+
+ASCOT isn't simply "CPU only."
+
+Some inputs can consume substantial memory, particularly things such as:
+
+3D magnetic fields
+3D wall geometry
+distribution outputs
+large numbers of simulation markers
+
+The ASCOT documentation specifically notes that these can be memory-intensive inputs, and that MPI processes do not share memory.
+
+
+
+
+
+
+# 2. But memory can become important
+
+
+
+
+
+
 ## Features
 
 ASCOT5 is a test-particle orbit-following code for computing particle orbits in 3D geometry. The output includes particle orbits, phase-space distributions, transport coefficients, and wall loads. ASCOT5 is frequently applied to study fast ions, impurities, neutrals, and runaway electrons in tokamaks and stellarators. Particle orbits are either solved fully, i.e. including the gyro-motion, or in a reduced picture where only the guiding-center trajectory is traced. The code is extensively parallelized and optimized to support simulations with more than ten million markers.
