@@ -80,6 +80,12 @@ ASCOT5 is therefore a **scientific simulation tool**, not a fusion reactor itsel
 
 ---
 
+
+
+https://github.com/user-attachments/assets/af589c3c-0ad5-41a8-ba8b-4df9b3fce311
+
+
+
 # 2. Tokamaks and Stellarators
 
 
