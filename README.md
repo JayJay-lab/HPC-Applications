@@ -384,6 +384,25 @@ echo 'export EDITOR=/usr/bin/nano' >> ~/.bashrc
 ```
 
 
+# Simulation
+
+
+##Installing notebook to visualise the code
+
+```bash
+pip install jupyter
+ipython kernel install --user --name=ascotenv
+```
+## Now you can run the examples interactively with browser 
+```bash
+jupyter-notebook
+```
+## Where the examples stored 
+```bash
+cd ascot5/doc/tutorials
+```
+
+
 
 
 
