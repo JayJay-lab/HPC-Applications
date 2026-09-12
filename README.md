@@ -352,8 +352,28 @@ sudo apt update && sudo apt install -y libhdf5-serial-dev hdf5-tools
 verify 
 ```bash
 
-which h5pcc || which h5pcc.openmpi
+h5dump --version
+h5cc -showconfig
 ```
+If h5dump returns a version number, the tools are installed and ready to use
+
+Check the Package Status via dpkg
+```bash
+dpkg -l | grep -E "libhdf5-serial-dev|hdf5-tools"
+```
+expected output
+```bash
+ii  hdf5-tools                    1.14.3-1ubuntu5   amd64  HDF5 Software Collection - Tools
+ii  libhdf5-serial-dev            1.14.3-1ubuntu5   amd64  HDF5 - Serial Development files
+```
+Verify Header and Library Files
+```bash
+Verify Header and Library Files
+```
+This should print a path like /usr/include/hdf5/serial/hdf5.h
+
+
+
 output /usr/bin/h5pcc
 
 ## Python 3.12
