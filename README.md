@@ -366,6 +366,15 @@ expected output
 ii  hdf5-tools                    1.14.3-1ubuntu5   amd64  HDF5 Software Collection - Tools
 ii  libhdf5-serial-dev            1.14.3-1ubuntu5   amd64  HDF5 - Serial Development files
 ```
+if the second part is not in output it might affect the python application from getting the data since all data is nested 
+```bash # Tell your shell where the HDF5 libraries and headers are located
+export HDF5_DIR=/usr/lib/x86_64-linux-gnu/hdf5/serial
+export HDF5_INCLUDEDIR=/usr/include/hdf5/serial
+
+# (Optional) Add them to your profile so you don't lose them on reboot
+echo 'export HDF5_DIR=/usr/lib/x86_64-linux-gnu/hdf5/serial' >> ~/.bashrc
+echo 'export HDF5_INCLUDEDIR=/usr/include/hdf5/serial' >> ~/.bashrc
+```
 Verify Header and Library Files
 ```bash
 find /usr/include -name "hdf5.h"
