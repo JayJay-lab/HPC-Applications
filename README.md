@@ -368,7 +368,8 @@ ii  libhdf5-serial-dev            1.14.3-1ubuntu5   amd64  HDF5 - Serial Develop
 ```
 Verify Header and Library Files
 ```bash
-Verify Header and Library Files
+find /usr/include -name "hdf5.h"
+
 ```
 This should print a path like /usr/include/hdf5/serial/hdf5.h
 
