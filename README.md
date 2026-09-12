@@ -252,8 +252,15 @@ wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/d4e49548-1492-4
 ```
 
 ---
-
-### Step 3: Make the Installer Scripts Executable
+### Step 3. Make sure u are using all of your space
+```bash
+df -h
+lsblk
+sudo growpart /dev/sda 3
+sudo pvresize /dev/sda3
+sudo lvextend -l +100%FREE -r /dev/mapper/ubuntu--vg-ubuntu--lv
+```
+### Step 4: Make the Installer Scripts Executable
 
 ```bash
 chmod +x l_BaseKit_p_2024.2.0.634_offline.sh
@@ -262,7 +269,7 @@ chmod +x l_HPCKit_p_2024.2.0.635_offline.sh
 
 ---
 
-### Step 4: Run the Base Toolkit Installer
+### Step 5: Run the Base Toolkit Installer
 
 ```bash
 ./l_BaseKit_p_2024.2.0.634_offline.sh -a --cli --eula accept
@@ -278,7 +285,7 @@ The installer will display CLI text prompts. Navigate through them and confirm t
 
 ---
 
-### Step 5: Run the HPC Toolkit Installer
+### Step 6: Run the HPC Toolkit Installer
 
 ```bash
 ./l_HPCKit_p_2024.2.0.635_offline.sh -a --cli --eula accept
@@ -288,7 +295,7 @@ Again, navigate the CLI prompts and confirm.
 
 ---
 
-### Step 6: Configure Your Environment for Intel oneAPI
+### Step 7: Configure Your Environment for Intel oneAPI
 
 The `setvars.sh` script sets up all required environment variables for the Intel compiler suite in one step:
 
@@ -304,7 +311,7 @@ echo 'source ~/intel/oneapi/setvars.sh' >> ~/.profile
 
 ---
 
-### Step 7: Set Up Intel Lmod Modulefiles (Optional but Recommended)
+### Step 8: Set Up Intel Lmod Modulefiles (Optional but Recommended)
 
 If you successfully installed Lmod in Section 3.2, Intel oneAPI can register itself as loadable modules:
 
