@@ -349,38 +349,45 @@ which h5pcc || which h5pcc.openmpi
 ```
 output /usr/bin/h5pcc
 
-## Python 3.10
+## Python 3.12
 ```bash
 
 sudo apt update
-sudo apt install -y python3.10 python3.10-venv python3.10-dev
+sudo apt install -y python3 python3-venv python3-dev
 ```
 ```bash
-python3.10 --version
+python3 --version
 ```
+
 
 # 2. Installing ASCOT5
 
 ## Download the source and set up the virtual environment:
 ```bash
 git clone https://github.com/ascot4fusion/ascot5.git
-python -m venv ascot-env
-source activate ascot-env/bin/activate
+python3 -m venv ascot-env
+source ascot-env/bin/activate
 ```
 
 ## Install a5py and compile the executables which will be located at build/:
 
 ```bash
 cd ascot5
+pip install --upgrade pip
 pip install -e .
 make ascot5_main -j MPI=1
 make libascot -j MPI=1
 ```
 
-##The simulation options are edited with the local text editor, which usually happens to be vim. Consider adding the following line to your .bashrc (or .bash_profile if working locally):
+##ASCOT5 simulation options can be edited using a text editor such as nano or vim. These editors allow you to modify configuration files directly from the Ubuntu terminal.
+To make nano your default text editor, run the following command:
 
 ```bash
 echo 'export EDITOR=/usr/bin/nano' >> ~/.bashrc
+```
+Then reload your Bash configuration:
+```bash
+source ~/.bashrc
 ```
 
 
