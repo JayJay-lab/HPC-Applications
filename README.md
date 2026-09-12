@@ -381,10 +381,23 @@ find /usr/include -name "hdf5.h"
 
 ```
 This should print a path like /usr/include/hdf5/serial/hdf5.h
-
-
-
 output /usr/bin/h5pcc
+
+
+2. Do You Need to Install It on Other Nodes?
+You do NOT need libhdf5-serial-dev (the -dev package) on worker nodes. Development packages and headers are only needed where you compile code (ascot5_main).
+
+Worker nodes only need the runtime shared library (libhdf5_serial.so).
+
+If your nodes share /home/ubuntu or /opt via NFS, the compiled binary is already accessible everywhere. To ensure worker nodes can resolve the dynamic HDF5 libraries at runtime:
+
+On each worker node (or via an SSH loop):
+
+```bash
+sudo apt update && sudo apt install -y libhdf5-103-1  # or libhdf5-serial-100+ depending on Ubuntu release
+# Quick catch-all for runtime libraries only (no compiler headers):
+sudo apt install -y "libhdf5-*" --no-install-recommends
+```
 
 ## Python 3.12
 ```bash
