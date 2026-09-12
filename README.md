@@ -347,7 +347,7 @@ ml mkl/2024.2
 
 ```bash
 
-sudo apt update && sudo apt install -y libhdf5-openmpi-dev
+sudo apt update && sudo apt install -y libhdf5-serial-dev hdf5-tools
 ```
 verify 
 ```bash
