@@ -1,0 +1,473 @@
+HPC-Applications
+
+ASCOT5
+
+ASCOT5 is a test-particle orbit-following code used to study particle motion,
+transport and losses in magnetic-confinement fusion devices such as tokamaks
+and stellarators.
+
+This section documents the ASCOT5 installation and the data-driven HPC test
+runner used in this project.
+
+What the application calculates
+
+A typical ASCOT5 simulation takes:
+
+Magnetic field
+      +
+Plasma parameters
+      +
+Reactor / wall geometry
+      +
+Particle properties
+      |
+      v
+   ASCOT5
+      |
+      v
+Particle trajectories
+Energy evolution
+Collisions
+Wall interactions
+      |
+      v
+Diagnostics / distributions / performance data
+
+A marker represents a simulated particle. Because many marker calculations can
+be treated independently, ASCOT5 is well suited to MPI/OpenMP parallelism.
+
+Why this application is useful for HPC
+
+ASCOT5 uses multiple levels of parallelism:
+
+MPI processes
+      |
+OpenMP threads
+      |
+SIMD / vector operations
+      |
+Particle calculations
+
+The workload is primarily computational, but memory can also become important
+for large magnetic fields, wall geometry, distributions, diagnostics and large
+marker populations.
+
+The ASCOT5 HDF5 design can contain multiple inputs and multiple simulation
+results, with each item identified by a QID and optional description. This makes
+it suitable for parameter scans and repeatable studies.
+
+1. Requirements
+
+The working environment used by this project includes:
+
+Ubuntu 24.04
+
+Python 3.12
+
+Intel oneAPI compiler / MPI
+
+HDF5
+
+OpenMP
+
+MPI
+
+ASCOT5 / a5py
+
+Install the basic Python tools:
+
+sudo apt update
+sudo apt install -y python3 python3-venv python3-dev
+
+Check:
+
+python3 --version
+
+Intel oneAPI
+
+Load oneAPI before using the Intel compiler or Intel MPI:
+
+source ~/intel/oneapi/setvars.sh
+
+To load it automatically:
+
+echo 'source ~/intel/oneapi/setvars.sh' >> ~/.profile
+
+For Lmod/modulefile use, the existing project setup can also expose Intel
+compiler, MPI and MKL modules.
+
+HDF5
+
+sudo apt update
+sudo apt install -y libhdf5-serial-dev hdf5-tools
+
+Verify:
+
+h5dump --version
+h5cc -showconfig
+
+The worker nodes need the HDF5 runtime libraries that the compiled ASCOT5
+binary requires. Development headers are primarily needed where ASCOT5 is
+compiled.
+
+2. Install ASCOT5
+
+Clone the source:
+
+git clone https://github.com/ascot4fusion/ascot5.git
+
+Create and activate the Python environment:
+
+python3 -m venv ascot-env
+source ascot-env/bin/activate
+
+Install a5py and compile the main executable:
+
+cd ascot5
+pip install --upgrade pip
+pip install -e .
+make ascot5_main -j MPI=1
+make libascot -j MPI=1
+
+The executable used by this project is:
+
+/home/ubuntu/ascot5/build/ascot5_main
+
+Change that path in ascot_tests.json when your installation is somewhere
+else.
+
+3. Default text editor
+
+ASCOT5 simulation options can be edited from the Ubuntu terminal with nano or
+vim. To make nano the default editor:
+
+echo 'export EDITOR=/usr/bin/nano' >> ~/.bashrc
+source ~/.bashrc
+
+4. Jupyter visualisation
+
+Install Jupyter:
+
+pip install jupyter
+ipython kernel install --user --name=ascotenv
+
+Start the notebook server:
+
+jupyter-notebook
+
+Tutorials are stored in:
+
+cd ~/ascot5/doc/tutorials
+
+5. MPI networking and the headnode firewall
+
+The Intel MPI process manager (Hydra) needs TCP connectivity between the
+nodes. In this cluster, the headnode firewall uses an hn_table nftables
+chain with a default drop policy. The relevant TCP chain allows SSH (22) and
+NFS (2049) by default.
+
+The MPI port range used by this project is:
+
+40000-40100
+
+The firewall must allow the MPI TCP/UDP traffic on the cluster interfaces.
+For example, the working rules can include:
+
+sudo nft add rule inet hn_table hn_tcp_chain tcp dport 40000-40100 accept
+sudo nft add rule inet hn_table hn_udp_chain udp dport 40000-40100 accept
+
+Inspect the active rules:
+
+sudo nft list ruleset
+sudo nft list chain inet hn_table hn_tcp_chain
+
+Do not add these rules blindly to a different cluster. First inspect that
+cluster's firewall policy and persistent nftables configuration.
+
+Before an MPI run, the environment used by this project includes:
+
+export I_MPI_HYDRA_IFACE=ens37
+export I_MPI_PORT_RANGE=40000:40100
+export HDF5_USE_FILE_LOCKING=FALSE
+
+Test the network path with a simple TCP listener before debugging MPI itself.
+
+6. Data-driven ASCOT5 tests
+
+Why the script was changed
+
+The original slowing-down script placed almost every parameter directly in
+Python. That makes parameter scans difficult because changing the number of
+markers, density, temperature or stopping condition requires editing code.
+
+The new structure separates:
+
+ascot_tests.json
+      |
+      |  test data / parameters
+      v
+run_ascot_tests.py
+      |
+      |  common simulation pipeline
+      v
+ASCOT5 + MPI
+      |
+      +---- runs/<test>/ascot.h5
+      +---- plots
+      +---- summaries
+      +---- benchmark report
+
+The JSON file is now the place where test data is added or changed.
+
+Files
+
+Keep these files together:
+
+ascot_tests.json
+run_ascot_tests.py
+
+The important sections of ascot_tests.json are:
+
+paths
+  -> ASCOT executable and output root
+
+mpi
+  -> nodes, MPI ranks, OpenMP threads and Hydra networking
+
+common
+  -> shared field, plasma, AFSI, marker and simulation settings
+
+tests
+  -> individual test cases
+
+Run available tests
+
+List all configured tests:
+
+python3 run_ascot_tests.py --list
+
+Run the baseline:
+
+python3 run_ascot_tests.py --test slowingdown_baseline
+
+Run a different test:
+
+python3 run_ascot_tests.py --test high_density
+
+Run the complete suite:
+
+python3 run_ascot_tests.py --test all
+
+Adding another test
+
+You normally do not need to edit run_ascot_tests.py.
+
+Add another object to the tests array in ascot_tests.json:
+
+{
+  "name": "my_test",
+  "description": "Example custom parameter test.",
+  "markers": 5000,
+  "birth_energy_eV": 3520000.0,
+  "seed": 42,
+  "output_prefix": "my_test",
+  "overrides": {
+    "plasma": {
+      "electron_temperature_eV": 15000
+    },
+    "simulation_options": {
+      "ENDCOND_MAX_MILEAGE": 1.0
+    }
+  }
+}
+
+Then run:
+
+python3 run_ascot_tests.py --test my_test
+
+This allows you to perform controlled parameter sweeps such as:
+
+Test A: 1,000 markers
+Test B: 10,000 markers
+Test C: 100,000 markers
+
+or
+
+Test A: 10 keV plasma
+Test B: 15 keV plasma
+Test C: 20 keV plasma
+
+or
+
+Test A: 0.5 m mileage limit
+Test B: 1.0 m mileage limit
+Test C: 2.0 m mileage limit
+
+The same pattern can be used for other values already exposed by the JSON
+configuration.
+
+Different simulation workflows
+
+Each test can specify a workflow:
+
+"workflow": "afsi_slowingdown"
+
+uses the AFSI thermal fusion-product source used by the current slowing-down
+case.
+
+"workflow": "direct_alpha"
+
+creates direct guiding-center alpha markers without building the AFSI source.
+This is useful for lightweight orbit-following and performance tests.
+
+The runner currently provides these two reusable workflows. Adding a completely
+different ASCOT5 tutorial/application may require a new workflow function, but
+parameter scans within these workflows require only JSON changes.
+
+7. Output structure
+
+Each test is isolated in its own directory:
+
+runs/
+├── slowingdown_baseline/
+│   ├── ascot.h5
+│   ├── input_summary.txt
+│   ├── mpi_command.txt
+│   ├── slowingdown_baseline_2d_histograms.png
+│   ├── slowingdown_baseline_3d_browser.html
+│   ├── slowingdown_baseline_summary.json
+│   └── slowingdown_baseline_summary.txt
+│
+├── high_density/
+│   ├── ascot.h5
+│   └── ...
+│
+└── test_report.json
+
+This is deliberate: a new test no longer deletes the previous test's
+ascot.h5.
+
+Check a result
+
+cat runs/slowingdown_baseline/slowingdown_baseline_summary.txt
+
+Machine-readable result:
+
+cat runs/slowingdown_baseline/slowingdown_baseline_summary.json
+
+Whole-suite report:
+
+cat runs/test_report.json
+
+The 2D histogram is useful for quick comparison, while the Plotly HTML file
+can be opened in a browser and rotated interactively.
+
+8. HPC benchmarking workflow
+
+For the SCC / cluster work, the recommended workflow is:
+
+1. Choose parameters in ascot_tests.json
+             |
+             v
+2. Run one or more test cases
+             |
+             v
+3. Keep every test in its own directory
+             |
+             v
+4. Compare elapsed runtime
+             |
+             v
+5. Increase marker count / change physics parameters
+             |
+             v
+6. Repeat with different MPI/OpenMP layouts
+             |
+             v
+7. Use the result summaries and monitoring tools
+
+Useful scaling dimensions include:
+
+marker count
+
+plasma density
+
+plasma temperature
+
+maximum mileage
+
+simulation time limit
+
+MPI process count
+
+OpenMP thread count
+
+number of nodes
+
+For a fair benchmark, keep the physics inputs and random seed fixed while
+changing only the HPC parameter under investigation.
+
+9. Important ASCOT5 data note
+
+ASCOT5 stores simulation input and output in HDF5. The project should keep
+parameter names and descriptions clear so that later analysis can distinguish
+different cases.
+
+The reusable runner follows that principle by:
+
+storing each test in a separate directory
+
+recording the test name and description
+
+writing an input summary
+
+saving the exact MPI command
+
+generating machine-readable JSON results
+
+producing visual output for every test
+
+10. Current example tests
+
+The supplied ascot_tests.json contains:
+
+Test
+
+Purpose
+
+slowingdown_baseline
+
+Baseline 3.52 MeV alpha slowing-down case
+
+high_density
+
+Tests sensitivity to higher plasma density
+
+more_markers
+
+Increases particle workload for scaling experiments
+
+longer_mileage
+
+Increases the maximum tracked mileage
+
+orbit_following
+
+Direct alpha-marker orbit-following workload
+
+These are examples, not a complete benchmark specification. Add tests to the
+JSON file as your experiment grows.
+
+11. Files from this setup
+
+ascot_tests.json       # EDIT THIS: simulation/test data
+run_ascot_tests.py     # REUSABLE ENGINE: normally leave unchanged
+runs/                  # generated test results
+
+The key idea is:
+
+Put experiment data in ascot_tests.json; keep the execution logic in
+run_ascot_tests.py.
+
+This makes the ASCOT5 application easier to reproduce, extend and benchmark
+across multiple HPC test cases.
