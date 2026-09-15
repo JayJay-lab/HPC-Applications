@@ -1,0 +1,185 @@
+{
+  "project": {
+    "name": "ASCOT5 HPC Test Suite",
+    "description": "Data-driven ASCOT5 test cases for repeatable multi-node runs and comparisons."
+  },
+  "paths": {
+    "ascot_binary": "/home/ubuntu/ascot5/build/ascot5_main",
+    "output_root": "runs"
+  },
+  "mpi": {
+    "hosts": [
+      "compute1:1",
+      "compute2:1"
+    ],
+    "np": 2,
+    "omp_threads": 4,
+    "hydra_iface": "ens37",
+    "port_range": "40000:40100"
+  },
+  "common": {
+    "field": {
+      "template": "bfield analytical iter circular",
+      "description": "ANALYTICAL"
+    },
+    "plasma": {
+      "rho_min": 0.0,
+      "rho_max": 2.0,
+      "nrho": 101,
+      "electron_density_m3": 2000000000000000000000,
+      "electron_temperature_eV": 10000,
+      "ion_density_m3": 1000000000000000000000,
+      "ion_temperature_eV": 10000,
+      "edge_rho_cutoff": 1.0,
+      "edge_electron_density_m3": 1.0,
+      "edge_ion_density_m3": 1.0,
+      "anum": [
+        2,
+        3
+      ],
+      "znum": [
+        1,
+        1
+      ],
+      "mass_amu": [
+        2.014,
+        3.016
+      ],
+      "charge": [
+        1,
+        1
+      ],
+      "description": "FLATDT"
+    },
+    "afsi": {
+      "reaction": "DT_He4n",
+      "nmc": 100,
+      "r_min": 4.2,
+      "r_max": 8.2,
+      "nr": 50,
+      "phi_min_deg": 0.0,
+      "phi_max_deg": 360.0,
+      "nphi": 2,
+      "z_min": -2.0,
+      "z_max": 2.0,
+      "nz": 50,
+      "ppar_min": -1.3e-19,
+      "ppar_max": 1.3e-19,
+      "nppar": 80,
+      "pperp_min": 0.0,
+      "pperp_max": 1.3e-19,
+      "npperp": 40
+    },
+    "marker_birth": {
+      "species": "alpha",
+      "mass_amu": 4.002,
+      "charge_e": 2.0,
+      "pitch_min": -1.0,
+      "pitch_max": 1.0,
+      "r_center_m": 6.2,
+      "r_half_width_m": 0.6,
+      "z_min_m": -0.4,
+      "z_max_m": 0.4,
+      "description": "ALPHAS"
+    },
+    "simulation_options": {
+      "SIM_MODE": 2,
+      "ENABLE_ADAPTIVE": 1,
+      "ENDCOND_SIMTIMELIM": 1,
+      "ENDCOND_MAX_MILEAGE": 0.5,
+      "ENDCOND_CPUTIMELIM": 1,
+      "ENDCOND_MAX_CPUTIME": 10.0,
+      "ENDCOND_ENERGYLIM": 1,
+      "ENDCOND_MIN_ENERGY": 2000.0,
+      "ENDCOND_MIN_THERMAL": 2.0,
+      "ENABLE_ORBIT_FOLLOWING": 1,
+      "ENABLE_COULOMB_COLLISIONS": 1,
+      "ENABLE_DIST_5D": 1,
+      "DIST_MIN_R": 4.3,
+      "DIST_MAX_R": 8.3,
+      "DIST_NBIN_R": 50,
+      "DIST_MIN_PHI": 0.0,
+      "DIST_MAX_PHI": 360.0,
+      "DIST_NBIN_PHI": 1,
+      "DIST_MIN_Z": -2.0,
+      "DIST_MAX_Z": 2.0,
+      "DIST_NBIN_Z": 50,
+      "DIST_MIN_PPA": -1.3e-19,
+      "DIST_MAX_PPA": 1.3e-19,
+      "DIST_NBIN_PPA": 100,
+      "DIST_MIN_PPE": 0.0,
+      "DIST_MAX_PPE": 1.3e-19,
+      "DIST_NBIN_PPE": 50,
+      "DIST_MIN_TIME": 0.0,
+      "DIST_MAX_TIME": 1.0,
+      "DIST_NBIN_TIME": 1,
+      "DIST_MIN_CHARGE": 0.0,
+      "DIST_MAX_CHARGE": 2.0,
+      "DIST_NBIN_CHARGE": 1
+    }
+  },
+  "tests": [
+    {
+      "name": "slowingdown_baseline",
+      "description": "Baseline 3.52 MeV alpha slowing-down test.",
+      "markers": 1000,
+      "birth_energy_eV": 3520000.0,
+      "seed": 42,
+      "output_prefix": "slowingdown_baseline",
+      "workflow": "afsi_slowingdown"
+    },
+    {
+      "name": "high_density",
+      "description": "Higher plasma density test.",
+      "markers": 1000,
+      "birth_energy_eV": 3520000.0,
+      "seed": 42,
+      "output_prefix": "high_density",
+      "overrides": {
+        "plasma": {
+          "electron_density_m3": 4000000000000000000000,
+          "ion_density_m3": 2000000000000000000000
+        }
+      },
+      "workflow": "afsi_slowingdown"
+    },
+    {
+      "name": "more_markers",
+      "description": "Same physics with a larger marker population for scaling tests.",
+      "markers": 10000,
+      "birth_energy_eV": 3520000.0,
+      "seed": 42,
+      "output_prefix": "more_markers",
+      "workflow": "afsi_slowingdown"
+    },
+    {
+      "name": "longer_mileage",
+      "description": "Longer maximum tracked mileage.",
+      "markers": 1000,
+      "birth_energy_eV": 3520000.0,
+      "seed": 42,
+      "output_prefix": "longer_mileage",
+      "overrides": {
+        "simulation_options": {
+          "ENDCOND_MAX_MILEAGE": 2.0
+        }
+      },
+      "workflow": "afsi_slowingdown"
+    },
+    {
+      "name": "orbit_following",
+      "workflow": "direct_alpha",
+      "description": "Direct alpha-marker orbit-following test without AFSI source construction.",
+      "markers": 10000,
+      "birth_energy_eV": 3520000.0,
+      "seed": 42,
+      "output_prefix": "orbit_following",
+      "overrides": {
+        "simulation_options": {
+          "ENABLE_COULOMB_COLLISIONS": 0,
+          "ENDCOND_MAX_MILEAGE": 0.5
+        }
+      }
+    }
+  ]
+}
