@@ -429,7 +429,7 @@ make ascot5_main -j MPI=1
 make libascot -j MPI=1
 ```
 
-##ASCOT5 simulation options can be edited using a text editor such as nano or vim. These editors allow you to modify configuration files directly from the Ubuntu terminal.
+## ASCOT5 simulation options can be edited using a text editor such as nano or vim. These editors allow you to modify configuration files directly from the Ubuntu terminal.
 To make nano your default text editor, run the following command:
 
 ```bash
