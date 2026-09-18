@@ -207,3 +207,15 @@ sudo apt install -y python3 python3-venv python3-dev
 python3 --version
 ```
 
+
+## ASCOT5 simulation options can be edited using a text editor such as nano or vim. These editors allow you to modify configuration files directly from the Ubuntu terminal.
+To make nano your default text editor, run the following command:
+
+```bash
+echo 'export EDITOR=/usr/bin/nano' >> ~/.bashrc
+```
+Then reload your Bash configuration:
+```bash
+source ~/.bashrc
+```
+
