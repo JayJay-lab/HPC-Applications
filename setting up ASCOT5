@@ -1,1 +1,11 @@
+# 1. Requirements
+
+## Install the requirements or use the module system:
+
+### C compiler (Intel)
+### HDF5
+### OpenMP
+### MPI (Intel)
+### Python3.10
+
 
