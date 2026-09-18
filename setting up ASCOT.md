@@ -221,7 +221,7 @@ source ~/.bashrc
 # Simulation
 
 
-##Installing notebook to visualise the code
+## Installing notebook to visualise the code
 
 ```bash
 pip install jupyter
@@ -235,4 +235,5 @@ jupyter-notebook
 ```bash
 cd ascot5/doc/tutorials
 ```
+
 
