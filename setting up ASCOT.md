@@ -236,4 +236,8 @@ jupyter-notebook
 cd ascot5/doc/tutorials
 ```
 
+```bash
+ln -s ~/ascot5/build/ascot5_main ascot5_main
+```
+
 
