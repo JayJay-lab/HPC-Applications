@@ -236,6 +236,8 @@ jupyter-notebook
 cd ascot5/doc/tutorials
 ```
 
+Link the ascot_main binary with directory 
+
 ```bash
 ln -s ~/ascot5/build/ascot5_main ascot5_main
 ```
