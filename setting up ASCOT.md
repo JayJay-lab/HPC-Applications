@@ -142,3 +142,28 @@ ml mkl/2024.2
 ```
 
 ---
+
+
+## HDF5
+
+```bash
+
+sudo apt update && sudo apt install -y libhdf5-serial-dev hdf5-tools
+```
+verify 
+```bash
+
+h5dump --version
+h5cc -showconfig
+```
+If h5dump returns a version number, the tools are installed and ready to use
+
+Check the Package Status via dpkg
+```bash
+dpkg -l | grep -E "libhdf5-serial-dev|hdf5-tools"
+```
+expected output
+```bash
+ii  hdf5-tools                    1.14.3-1ubuntu5   amd64  HDF5 Software Collection - Tools
+ii  libhdf5-serial-dev            1.14.3-1ubuntu5   amd64  HDF5 - Serial Development files
+```
